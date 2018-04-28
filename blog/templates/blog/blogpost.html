@@ -1,0 +1,38 @@
+{% extends 'blog/base.html' %}
+
+{% block title %}主页{% endblock %}
+
+{% block beforehead %}
+
+<script>
+</script>
+
+{% endblock %}
+
+{% block content %}
+
+    <div class="uk-width-medium-3-4">
+    {% for blog in blogs %}
+        <article class="uk-article">
+            <h2><a href="{% url 'blog:blog' blog.id %}">{{ blog.title }}</a> </h2>
+            <p class="uk-article-meta">发表于: {{ blog.date_added|date:'Y, M d, H:i' }}</p>
+            <p>{{ blog}}</p>
+            <p><a href="{% url 'blog:blog' blog.id %}">继续阅读<i class="uk-icon-angle-double-right"></i></a></p>
+        </article>
+        <hr class="uk-article-divider">
+    {% endfor %}
+    </div>
+
+    <div class="uk-width-medium-1-4">
+        <div class="uk-panel uk-panel-header">
+            <h3 class="uk-panel-title">友情链接</h3>
+            <ul class="uk-list uk-list-line">
+                <li><i class="uk-icon-thumbs-o-up"></i><a target="_blank" href="http://www.w3school.com.cn/" > W3school</a></li>
+                <li><i class="uk-icon-thumbs-o-up"></i> <a target="_blank" href="https://www.liaoxuefeng.com/wiki/0014316089557264a6b348958f449949df42a6d3a2e542c000">Python教程</a></li>
+                <li><i class="uk-icon-thumbs-o-up"></i> <a target="_blank" href="http://www.liaoxuefeng.com/wiki/0013739516305929606dd18361248578c67b8067c8c017b000">Git教程</a></li>
+                <li><i class="uk-icon-thumbs-o-up"></i> <a target="_blank" href="http://www.liaoxuefeng.com/category/0013738748415562fee26e070fa4664ad926c8e30146c67000">编程</a></li>
+            </ul>
+        </div>
+    </div>
+
+{% endblock %}

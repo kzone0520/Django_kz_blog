@@ -1,0 +1,38 @@
+{% extends 'blog/base.html' %}
+
+{% block title %}登录{% endblock %}
+
+{% block content %}
+<body class="uk-height-1-1">
+    <div class="uk-vertical-align uk-text-center uk-height-1-1">
+
+        <div class="uk-vertical-align-middle" style="width: 320px">
+            <p><a href="{% url 'blog:blogpost' %}" class="uk-icon-button"><i class="uk-icon-html5" ></i></a></p>
+
+            {% if form.errors %}
+                <p style="color: red;">>用户名或者密码错误，请重新尝试。</>
+            {% endif %}
+            <form  method="post" action="{% url 'user:login' %}" class="uk-panel uk-panel-box uk-form">
+                {% csrf_token %}
+                <div class="uk-alert uk-alert-danger uk-hidden"></div>
+                <div class="uk-form-row">
+                    <div class="uk-form-icon uk-width-1-1">
+                        <i class="uk-icon-user"></i>
+                        <input v-model="username" name="username" type="text" placeholder="用户名" maxlength="50" class="uk-width-1-1 uk-form-large">
+                    </div>
+                </div>
+                <div class="uk-form-row">
+                    <div class="uk-form-icon uk-width-1-1">
+                        <i class="uk-icon-lock"></i>
+                        <input v-model="password" name="password" type="password" placeholder="口令" maxlength="50" class="uk-width-1-1 uk-form-large">
+                    </div>
+                </div>
+                <div class="uk-form-row">
+                    <button type="submit" class="uk-width-1-1 uk-button uk-button-primary uk-button-large"><i class="uk-icon-sign-in"></i> 登录</button>
+                    <input type="hidden" name="next"  value="{{ next }}" >
+                </div>
+            </form>
+        </div>
+    </div>
+</body>
+{% endblock %}

@@ -1,0 +1,105 @@
+{% extends 'blog/base.html' %}
+
+{% block title %}{{ blog.title }}{% endblock %}
+
+{% load static %}
+
+{% block content %}
+
+    <div class="uk-width-3-4">
+        <article class="uk-article">
+            <h2>{{ blog.title }}</h2>
+            <p class="uk-article-meta">发表于：{{ blog.date_added|date:'Y, M d, H:i' }}</p>
+            <p class="uk-article-meta">阅读：{{ blog.num }}</p>
+            <p>{{ text|linebreaks }}</p>
+            {% if user.username == 'kzone' %}
+                <a href="{% url 'blog:edit_blog' blog.id %}?next={{request.path}}">修改日志</a>
+            {% endif %}
+        </article>
+
+        <hr class="uk-article-divider">
+
+    {% if user.is_authenticated %}
+    {% else %}
+        游客也可评论，建议<a href="{% url 'user:login' %}?next={{request.path}}">登录</a>或<a href="{% url 'user:register' %}?next={{request.path}}">注册</a>留下您的大名
+    {% endif %}
+
+        <article class="uk-comment">
+            <header class="uk-comment-header">
+                {% if user.is_authenticated %}
+                    <img class="uk-comment-avatar uk-border-circle" width="50" height="50" src="{% static "img/ali.jpg" %}" alt="My image">
+                    <h4 class="uk-comment-title">{{ user.username }}</h4>
+                {% else %}
+                    <img class="uk-comment-avatar uk-border-circle" width="50" height="50" src="{% static "img/youke.jpg" %}" alt="My image">
+                    <h4 class="uk-comment-title">￥无名者￥</h4>
+                {% endif %}
+            </header>
+
+            <form   action="{% url 'blog:blog' blog.id %}" method='post' >
+                {% csrf_token %}
+                {{ form.as_p }}
+                <div class="uk-form-row">
+                    <button type="submit" class="uk-button uk-button-primary">
+                        <i class="uk-icon-comment">发表评论</i></button>
+                </div>
+            </form>
+
+
+        <hr class="uk-article-divider">
+
+
+        <h3>最新评论</h3>
+
+        <ul class="uk-comment-list" >
+            {% for comment in comments %}
+
+            <li>
+                <article class="uk-comment">
+                    <header class="uk-comment-header">
+                        {% if comment.user_name == '￥无名者￥' %}
+                            <img class="uk-comment-avatar uk-border-circle" width="50" height="50"
+                                 src="{% static "img/youke.jpg" %}" alt="My image">
+                        {% else %}
+                              {% if comment.user_name == 'kzone' %}
+                                  <img class="uk-comment-avatar uk-border-circle" width="50" height="50"
+                                       src="{% static "img/xiaochou.jpg" %}" alt="My image">
+                              {% else %}
+                                  <img class="uk-comment-avatar uk-border-circle" width="50" height="50"
+                                       src="{% static "img/ali.jpg" %}" alt="My image">
+                              {% endif %}
+                        {% endif %}
+                        <h4 class="uk-comment-title">
+                            {{ comment.user_name }}{% if comment.user_name == 'kzone' %}(￥作者￥){% endif %}</h4>
+                        <p class="uk-comment-meta">{{ comment.date_added|date:'Y, M d, H:i' }}</p>
+                    </header>
+                    <div class="uk-comment-body">
+                        {{ comment|linebreaks }}
+                    </div>
+                </article>
+            <hr class="uk-article-divider">
+            </li>
+
+            {% empty %}
+            <p>（还没有评论，快来抢沙发吧~）</p>
+            {% endfor %}
+        </ul>
+    </div>
+
+    <div class="uk-width-medium-1-4">
+        <div class="uk-panel uk-panel-box">
+            <div class="uk-text-center">
+                <img class="uk-border-circle" width="120" height="120" src="{% static "img/xiaochou.jpg" %}" alt="My image">
+                <h3>k.zone</h3>
+            </div>
+        </div>
+        <div class="uk-panel uk-panel-header">
+            <h3 class="uk-panel-title">友情链接</h3>
+            <ul class="uk-list uk-list-line">
+                <li><i class="uk-icon-thumbs-o-up"></i><a target="_blank" href="http://www.w3school.com.cn/"> W3school</a></li>
+                <li><i class="uk-icon-thumbs-o-up"></i> <a target="_blank" href="https://www.liaoxuefeng.com/wiki/0014316089557264a6b348958f449949df42a6d3a2e542c000">Python教程</a></li>
+                <li><i class="uk-icon-thumbs-o-up"></i> <a target="_blank" href="http://www.liaoxuefeng.com/wiki/0013739516305929606dd18361248578c67b8067c8c017b000">Git教程</a></li>
+                <li><i class="uk-icon-thumbs-o-up"></i> <a target="_blank" href="http://www.liaoxuefeng.com/category/0013738748415562fee26e070fa4664ad926c8e30146c67000">编程</a></li>
+            </ul>
+        </div>
+    </div>
+{% endblock content %}

@@ -1,0 +1,18 @@
+{% extends 'blog/base.html' %}
+
+{% block title %}新建{% endblock %}
+
+{% block content %}
+
+    <div class="uk-width-large-3-4">
+        <h2>新建博文：</h2>
+        <form action="{% url 'blog:new_blog' %}" method='post' class="uk-form uk-form-stacked">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <button name="submit" class="uk-button-large" style="background-color:#72ae41"><i class="uk-icon-apple" ></i>保存</button>
+        </form>
+    </div>
+{% endblock content %}
+
+
+

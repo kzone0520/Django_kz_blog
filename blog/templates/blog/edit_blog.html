@@ -1,0 +1,16 @@
+{% extends 'blog/base.html' %}
+
+{% block title %}修改{% endblock %}
+
+{% block content %}
+
+    <div class="uk-width-1-1">
+        <h2>修改博文：</h2>
+        <form action="{% url 'blog:edit_blog' blog.id %}" method='post' class="uk-form uk-form-stacked">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <button name="submit" class="uk-button-large" style="background-color:#72ae41"><i class="uk-icon-apple"></i>确认修改</button>
+            <button  value="{{ next }}" class="uk-button-large" style="background-color:#ba2121"><i class="uk-icon-android"></i>放弃修改</button>
+        </form>
+    </div>
+{% endblock content %}

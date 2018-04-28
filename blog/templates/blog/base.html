@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html>
+<head>
+    {% load static %}
+    <meta charset="UTF-8">
+    {% block meta %}<!-- block meta -->{% endblock %}
+    <title>{% block title %} ? {% endblock %} - Kzone博客</title>
+    <link rel="stylesheet" href="{% static "css/uikit.min.css" %}">
+    <link rel="stylesheet" href="{% static "css/uikit.gradient.min.css" %}">
+    <link rel="stylesheet" href="{% static "css/awesome.css" %}" />
+    <script src="{% static "js/jquery.min.js" %}"></script>
+    <script src="{% static "js/sha1.min.js" %}"></script>
+    <script src="{% static "js/uikit.min.js" %}"></script>
+    <script src="{% static "js/sticky.min.js" %}"></script>
+    <script src="{% static "js/vue.min.js" %}"></script>
+    <script src="{% static "js/awesome.js" %}"></script>
+    {% block beforehead %}<!-- before head -->{% endblock %}
+</head>
+<body>
+    <style>
+        html,body {
+        margin:0;
+        padding:0;
+        height: 100%;
+        }
+    </style>
+
+    <div id="container">
+        <style>
+            #container {
+            min-height:100%;
+            height: auto !important;
+            height: 100%; /*IE6不识别min-height*/
+            position: relative;
+            }
+        </style>
+
+        <div id="header">
+        <nav class="uk-navbar uk-navbar-attached uk-margin-bottom">
+            <div class="uk-container uk-container-center">
+                <a href="{% url 'blog:index' %}" class="uk-navbar-brand">Awesome</a>
+                <ul class="uk-navbar-nav">
+                    <li data-url="blog"><a href="{% url 'blog:blogpost' %}"><i class="uk-icon-home"></i>日志</a></li>
+                    <li><a target="_blank" href="http://kzone0520.herokuapp.com/?from=singlemessage&isappinstalled=0"><i class="uk-icon-book"></i> 学习笔记</a></li>
+                    {% if user.username == 'kzone' %}
+                        <li><a target="_blank" href="{% url 'blog:new_blog' %}?next={{ request.path }}">添加新博客</a></li>
+                    {% endif %}
+                    <li><a target="_blank" href="https://github.com/kzone0520/Django_kz_blog"><i class="uk-icon-code"></i>源码</a></li>
+                </ul>
+                <div class="uk-navbar-flip">
+                    <ul class="uk-navbar-nav">
+                    {% if user.is_authenticated %}
+                        <li class="uk-parent" data-uk-dropdown>
+                            <a href="#0"><i class="uk-icon-user"></i>{{ user.username}}</a>
+                            <li><a href="{% url 'user:logout' %}?next={{request.path}}"><i class="uk-icon-sign-out"></i>退出</a></li>
+                        </li>
+                    {% else %}
+                        <li><a href="{% url 'user:login' %}?next={{request.path}}"><i class="uk-icon-sign-in"></i>登录</a> </li>
+                        <li><a href="{% url 'user:register' %}?next={{request.path}}"><i class="uk-icon-edit"></i>注册</a> </li>
+                    {% endif %}
+                    </ul>
+                </div>
+            </div>
+        </nav>
+        </div>
+
+        <div class="uk-container uk-container-center" style="width:70%;margin:0 auto; padding-bottom: 270px;/*等于footer的高度*/">
+            <div class="uk-grid">
+                <!-- content -->
+                {% block content %}
+                {% endblock %}
+                <!-- // content -->
+            </div>
+        </div>
+    </div>
+
+    <div id="footer">
+        <style>
+            #footer {
+            position: relative;
+            margin-top: -270px;/*等于footer的高度*/
+            }
+        </style>
+        <!-- footer -->
+        <div class="uk-margin-large-top" style="background-color:#eee; border-top: 1px solid #ccc;">
+            <div class="uk-container uk-container-center uk-text-center">
+                <div class="uk-panel uk-margin-top uk-margin-bottom">
+                    <p>
+                        <a target="_blank" href="https://weibo.com/wuyanzu?refer_flag=1001030101_" class="uk-icon-button uk-icon-weibo"></a>
+                        <a target="_blank" href="http://www.linkedin.com/in/liaoxuefeng" class="uk-icon-button uk-icon-linkedin-square"></a>
+                    </p>
+                    <p>Powered by <a href="https://baidu.com">Django-kz-blogs</a>. Copyright %copy; 2018. [<a href="/admin/" target="_blank">admin</a>]</p>
+                    <p><a href="https://weibo.com/wuyanzu?refer_flag=1001030101_">K.zone</a> All rights reserved.</p>
+                    <a target="_blank" href="http://www.w3.org/TR/html5/"><i class="uk-icon-html5" style="font-size:64px; color: #444;"></i></a>
+                </div>
+
+            </div>
+        </div>
+        <!-- // footer -->
+
+    </div>
+
+</body>
+</html>
